@@ -2,9 +2,9 @@ openapi: 3.0.0
 info:
   description: >-
     This service contains content analysis modules. It provides estimation of
-    stance detection towards a claim in discussion, and estimation for claim's
+    stance detection towards a claim in discussion, and estimation for claim
     veracity. Currently it only supports tweet conversations.
-  version: 0.0.1
+  version: 0.0.2
   title: '[Draft] Co-Inform Content Analysis API'
   contact:
     email: ibaris@uni-koblenz.de
@@ -15,16 +15,18 @@ paths:
       description: It returns stance estimation for given post
       operationId: estimateStance
       parameters:
-        - in: string
-          name: tweetId
+        - name: tweetId
+          in: query
           required: true
           schema:
-            $ref: '#/definitions/Tweet'
+            $ref: '#/components/schemas/Tweet'
       responses:
         '200':
           description: successful operation
-          schema:
-            $ref: '#/definitions/StanceResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StanceResponse'
         '404':
           description: no such a tweet id
   /post/veracity:
@@ -33,37 +35,40 @@ paths:
       description: It returns veracity estimation for source post triggers the discussion
       operationId: estimateVeracity
       parameters:
-        - in: string
-          name: tweetId
+        - name: tweetId
+          in: query
           required: true
           schema:
-            $ref: '#/definitions/Tweet'
+            $ref: '#/components/schemas/Tweet'
       responses:
         '200':
           description: successful operation
-          schema:
-            $ref: '#/definitions/VeracityResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VeracityResponse'
         '400':
           description: tweet is not source tweet
         '404':
           description: no such a tweet id
-definitions:
-  Tweet:
-    type: object
-    properties:
-      tweet_id:
-        type: string
-  StanceResponse:
-    type: object
-    properties:
-      favor:
-        type: float
-      against:
-        type: float
-      na:
-        type: float
-  VeracityResponse:
-    type: object
-    properties:
-      'false':
-        type: float
+components:
+  schemas:
+    Tweet:
+      type: object
+      properties:
+        tweet_id:
+          type: string
+    StanceResponse:
+      type: object
+      properties:
+        favor:
+          type: number
+        against:
+          type: number
+        na:
+          type: number
+    VeracityResponse:
+      type: object
+      properties:
+        'false':
+          type: number

@@ -4,35 +4,15 @@ info:
     This service contains content analysis modules. It provides estimation of
     stance detection towards a claim in discussion, and estimation for claim
     veracity. Currently it only supports tweet conversations.
-  version: 0.0.2
+  version: 0.0.3
   title: '[Draft] Co-Inform Content Analysis API'
   contact:
     email: ibaris@uni-koblenz.de
 paths:
-  /post/stance:
-    post:
-      summary: Estimates stance of the tweet
-      description: It returns stance estimation for given post
-      operationId: estimateStance
-      parameters:
-        - name: tweetId
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Tweet'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StanceResponse'
-        '404':
-          description: no such a tweet id
   /post/veracity:
-    post:
-      summary: Estimates how the post is likely to be false
-      description: It returns veracity estimation for source post triggers the discussion
+    get:
+      summary: Estimates post veracity and average of stance towards the post.
+      description: Given source post, it detects the stances towards the rumour carried by source post, and then calculates the veracity of the rumour.
       operationId: estimateVeracity
       parameters:
         - name: tweetId
@@ -58,17 +38,16 @@ components:
       properties:
         tweet_id:
           type: string
-    StanceResponse:
-      type: object
-      properties:
-        favor:
-          type: number
-        against:
-          type: number
-        na:
-          type: number
     VeracityResponse:
       type: object
       properties:
-        'false':
+        'stance_support':
           type: number
+        'stance_deny':
+          type: number
+        'stance_query':
+          type: number
+        'veracity_prediction':
+          type: number
+        'veracity_label':
+          type: string

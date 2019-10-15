@@ -4,50 +4,95 @@ info:
     This service contains content analysis modules. It provides estimation of
     stance detection towards a claim in discussion, and estimation for claim
     veracity. Currently it only supports tweet conversations.
-  version: 0.0.3
+  version: 0.0.4
   title: '[Draft] Co-Inform Content Analysis API'
   contact:
     email: ibaris@uni-koblenz.de
 paths:
-  /post/veracity:
+  '/post/veracity/{tweet_id}':
     get:
       summary: Estimates post veracity and average of stance towards the post.
-      description: Given source post, it detects the stances towards the rumour carried by source post, and then calculates the veracity of the rumour.
-      operationId: estimateVeracity
+      description: >-
+        Given source post, it detects the stances towards the rumour carried by
+        source post, and then calculates the veracity of the rumour.
+      operationId: estimate_veracity_post_veracity_tweet_id_get
       parameters:
-        - name: tweetId
-          in: query
+        - name: tweet_id
+          in: path
           required: true
           schema:
-            $ref: '#/components/schemas/Tweet'
+            title: The ID of the tweet to get
+            type: string
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VeracityResponse'
+                $ref: '#/components/schemas/Conversation'
         '400':
           description: tweet is not source tweet
         '404':
           description: no such a tweet id
+        '422':
+          description: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    Conversation:
+      title: Conversation
+      required:
+        - source
+        - replies
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/Tweet'
+        replies:
+          title: Replies
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Tweet'
     Tweet:
       type: object
       properties:
-        tweet_id:
+        id:
           type: string
-    VeracityResponse:
+        text:
+          type: string
+        stance_comment:
+          type: number
+        stance_support:
+          type: number
+        stance_query:
+          type: number
+        stance_deny:
+          type: number
+        veracity_false:
+          type: number
+        veracity_true:
+          type: number
+        veracity_unknow:
+          type: number
+    ValidationError:
+      type: object
+      title: ValidationError
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+    HTTPValidationError:
+      title: HTTPValidationError
       type: object
       properties:
-        'stance_support':
-          type: number
-        'stance_deny':
-          type: number
-        'stance_query':
-          type: number
-        'veracity_prediction':
-          type: number
-        'veracity_label':
-          type: string
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'

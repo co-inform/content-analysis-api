@@ -71,7 +71,15 @@ components:
           type: number
         veracity_true:
           type: number
-        veracity_unknow:
+        veracity_unknown:
+          type: number
+        avg_stance_support:
+          type: number
+        avg_stance_query:
+          type: number
+        avg_stance_deny:
+          type: number
+        avg_stance_comment:
           type: number
     ValidationError:
       type: object

@@ -4,7 +4,7 @@ info:
     This service contains content analysis modules. It provides estimation of
     stance detection towards a claim in discussion, and estimation for claim
     veracity. Currently it only supports tweet conversations.
-  version: 0.0.4
+  version: 0.0.5
   title: '[Draft] Co-Inform Content Analysis API'
   contact:
     email: ibaris@uni-koblenz.de

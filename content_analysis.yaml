@@ -24,11 +24,12 @@ paths:
             title: The ID of the tweet to get
             type: string
       requestBody:
+        description: 'The object containing the callback_url from the Gateway'
         required: true
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/Callback'  
+                $ref: '#/components/schemas/Callback'
       responses:
         '200':
           description: Successful operation
@@ -45,17 +46,10 @@ paths:
 components:
   schemas:
     Callback:
-      title: 'The callback object from the Gateway Api'
-      type: 'object'
+      type: object
       properties:
-        _links:
-          type: 'object'
-          properties:
-            self:
-              type: 'object'
-              properties:
-                href:
-                type: 'string' 
+        callback_url:
+        type: string 
     Conversation:
       title: Conversation
       required:

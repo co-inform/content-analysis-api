@@ -10,7 +10,7 @@ info:
     email: ibaris@uni-koblenz.de
 paths:
   '/post/veracity/{tweet_id}':
-    get:
+    post:
       summary: Estimates post veracity and average of stance towards the post.
       description: >-
         Given source post, it detects the stances towards the rumour carried by
@@ -23,6 +23,12 @@ paths:
           schema:
             title: The ID of the tweet to get
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Callback'  
       responses:
         '200':
           description: Successful operation
@@ -38,6 +44,18 @@ paths:
           description: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    Callback:
+      title: 'The callback object from the Gateway Api'
+      type: 'object'
+      properties:
+        _links:
+          type: 'object'
+          properties:
+            self:
+              type: 'object'
+              properties:
+                href:
+                type: 'string' 
     Conversation:
       title: Conversation
       required:

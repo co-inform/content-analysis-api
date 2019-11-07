@@ -49,7 +49,7 @@ components:
       type: object
       properties:
         callback_url:
-        type: string 
+          type: string 
     Conversation:
       title: Conversation
       required:

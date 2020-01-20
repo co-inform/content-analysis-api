@@ -93,6 +93,10 @@ components:
           type: number
         avg_stance_comment:
           type: number
+        confidence:
+          type: number
+        credibility:
+          type: number
     ValidationError:
       type: object
       title: ValidationError
